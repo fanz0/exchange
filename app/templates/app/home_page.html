@@ -1,0 +1,14 @@
+{% extends 'app/base.html' %}
+
+
+{% block content %}
+{% if user.is_authenticated %}
+<a href="{% url 'logout_user' %}"><button class="w3-hover-green w3-margin w3-large w3-ripple">Logout</button></a>
+<a href="{% url 'profile' %}"><button class="w3-hover-green w3-margin w3-large w3-ripple">Profile</button></a>
+{% else %}
+<a href="{% url 'register_user' %}"><button class="w3-hover-green w3-margin w3-large w3-ripple">Register</button></a>
+<a href="{% url 'login_user' %}"><button class="w3-hover-green w3-margin w3-large w3-ripple">Login</button></a>
+{% endif %}
+{% endblock %}
+
+

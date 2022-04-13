@@ -1,0 +1,12 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<h1 class="w3-margin">New order</h1>
+
+<form method="POST" class="w3-margin">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit" class="save btn">Save</button>
+</form>
+
+{% endblock %}

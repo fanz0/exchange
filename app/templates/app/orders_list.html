@@ -1,0 +1,17 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<h1 class="w3-center">Orders list</h1>
+
+{% for order in orders %}
+<div class="w3-margin w3-card">
+    <a href="{% url 'order_details' pk=order.pk %}"><h1 class="w3-hover-text-green">{{ order.profile }}</h1></a>
+    <p>{{ order.datetime }}</p>
+    <h4>{{ order.quantity }} BTC</h4>
+    <h4>{{ order.price }}$</h4>
+</div>
+{% endfor %}
+
+
+{% endblock %}

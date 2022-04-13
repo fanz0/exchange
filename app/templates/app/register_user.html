@@ -1,0 +1,17 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+{% if form.errors %}
+<p>There was an error with your form</p>
+{% endif %}
+<h1 class="w3-center w3-margin">Register</h1>
+<br>
+
+<form action="{% url 'register_user' %}" method=POST class="w3-margin">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <input type="submit" value="Submit" class="button">
+</form>
+{% endblock %}

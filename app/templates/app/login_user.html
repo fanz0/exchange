@@ -1,0 +1,18 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<h1 class="w3-margin-left">Login</h1>
+
+<form class="w3-margin-left" method=POST>
+  {% csrf_token %}
+  <label for="username">Username:</label><br>
+  <input style="width:30%" type="text" id="username" name="username"><br>
+  <label for="pwd">Password:</label><br>
+  <input style="width:30%" type="password" id="pwd" name="password"><br>
+    <br>
+
+  <button class="w3-hover-green" type="submit">Submit</button>
+</form>
+
+{% endblock %}
