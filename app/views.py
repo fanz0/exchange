@@ -62,21 +62,23 @@ def personal_profile(request):
 
 def publish_order(request):
     price = get_price()
-    already_order = Order.objects.filter(profile=request.user)
-    if not already_order:
-        if request.method=="POST":
-            form=OrderForm(request.POST)
-            if form.is_valid():
-                order=form.save()
+    if request.method=="POST":
+        form=OrderForm(request.POST)
+        if form.is_valid():
+            order=form.save(commit=False)
+            profile=Profile.objects.get(user_profile=request.user)
+            if (profile.btc-order.quantity)>=0:
+                profile.btc-=order.quantity
                 order.profile = request.user
                 order.save()
-                messages.success(request,'Offer published!')
+                profile.save()
+                messages.success(request, 'Offer published!')
                 return redirect('profile')
-        else:
-            form=OrderForm()
+            else:
+                messages.success(request, 'You dont have enough bitcoins!')
+                return redirect('profile')
     else:
-        messages.success(request,'You already have an active order!')
-        return redirect('profile')
+        form=OrderForm()
     return render(request,'app/new_order.html',{'form':form,'price':price})
 
 def orders_list(request):
@@ -97,7 +99,6 @@ def purchase(request,pk):
     if buyer_profile.usd >= order.price:
         buyer_profile.btc+=order.quantity
         buyer_profile.usd -= order.price
-        seller_profile.btc-=order.quantity
         seller_profile.usd+=order.price
         buyer_profile.save()
         seller_profile.save()
