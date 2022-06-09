@@ -1,0 +1,8 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<p>Sale Completed! You sold {{ quantity }} BTC from {{ seller }}</p>
+<a href="{% url 'profile' %}"><h4>Profile</h4></a>
+
+{% endblock %}

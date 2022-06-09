@@ -8,8 +8,11 @@ urlpatterns=[
     path('logout_user/',views.logout_user,name='logout_user'),
     path('profile/',views.personal_profile,name='profile'),
     path('publish_order/',views.publish_order,name='publish_order'),
+    path('publish_buy_order/', views.publish_buy_order, name='publish_buy_order'),
     path('orders_list/',views.orders_list,name='orders_list'),
     path('order/<int:pk>/',views.order_details,name='order_details'),
+    path('order/<int:pk>/',views.buy_order_details,name='buy_order_details'),
     path('order/<int:pk>/purchase/',views.purchase,name='purchase'),
-    path('profile/analytics/',views.analytics,name='analytics'),
+    path('order/<int:pk>/sell/',views.sell,name='sell'),
+    path('profile/analytics/', views.analytics, name='analytics'),
 ]
