@@ -8,7 +8,7 @@
     <h4>{{ order.quantity }} BTC</h4>
     <h4>{{ order.price }}$</h4>
     {% if order.profile != user %}
-    <a href="{% url 'purchase' pk=order.pk %}"><button class="w3-ripple w3-hover-green">Buy</button></a>
+    <a href="{% url 'sale' pk=order.pk %}"><button class="w3-ripple w3-hover-green">Sell</button></a>
     {% endif %}
 </div>
 

@@ -1,6 +1,5 @@
 from django import forms
-from .models import Order
-from .models import SellOrder
+from .models import Order,BuyOffer
 
 class OrderForm(forms.ModelForm):
 
@@ -8,8 +7,8 @@ class OrderForm(forms.ModelForm):
         model=Order
         fields=('quantity','price')
 
-class SellOrderForm(forms.ModelForm):
+class BuyForm(forms.ModelForm):
 
     class Meta:
-        model=SellOrder
-        fields=('buyer_quantity','buyer_price')
+        model=BuyOffer
+        fields=('quantity','price')

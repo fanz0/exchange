@@ -1,16 +1,17 @@
 from django.contrib import admin
-from .models import Profile,Order,SellOrder
+from .models import Profile,Order,BuyOffer
 
 class ProfileAdmin(admin.ModelAdmin):
     list_display=('user_profile','btc')
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display=('profile','price','quantity')
+    list_display=('profile','price','quantity','pk')
 
-class SellOrderAdmin(admin.ModelAdmin):
-    list_display=('buyer_profile','buyer_price','buyer_quantity')
+class BuyOrderAdmin(admin.ModelAdmin):
+    list_display=('profile','price','quantity','pk')
+
 
 
 admin.site.register(Profile,ProfileAdmin)
 admin.site.register(Order,OrderAdmin)
-admin.site.register(SellOrder,SellOrderAdmin)
+admin.site.register(BuyOffer,BuyOrderAdmin)

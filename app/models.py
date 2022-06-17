@@ -16,8 +16,5 @@ class Order(models.Model):
     price=models.FloatField()
     quantity=models.FloatField()
 
-class SellOrder(models.Model):
-    buyer_profile=models.ForeignKey(User,on_delete=models.CASCADE)
-    buyer_datetime=models.DateTimeField(default=timezone.now())
-    buyer_price=models.FloatField()
-    buyer_quantity=models.FloatField()
+class BuyOffer(Order):
+    pass

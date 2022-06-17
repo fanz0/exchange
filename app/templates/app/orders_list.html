@@ -2,10 +2,10 @@
 
 {% block content %}
 
-<a href="{% url 'publish_buy_order' %}"><p class="w3-right w3-margin-right w3-hover-green">Create new purchase order</p></a>
-<h1 class="w3-margin-left w3-xxxlarge">Orders list</h1>
+<a href="{% url 'buy_order' %}"><p class="w3-right w3-margin-right w3-hover-green">Create new purchase order</p></a>
+<h1 class="w3-margin-left w3-xxxlarge">Orders List</h1>
 
-{% for order in orders %}
+{% for order in normal %}
 <div class="w3-margin w3-card">
     <a href="{% url 'order_details' pk=order.pk %}"><h1 class="w3-hover-text-green">{{ order.profile }}</h1></a>
     <p>{{ order.datetime }}</p>
@@ -14,12 +14,12 @@
 </div>
 {% endfor %}
 
-{% for order in sellorders %}
+{% for buyorder in common %}
 <div class="w3-margin w3-card">
-    <a href="{% url 'buy_order_details' pk=order.id %}"><h1 class="w3-hover-text-green">{{ order.profile }}</h1></a>
-    <p>{{ order.datetime }}</p>
-    <h4>{{ order.quantity }} BTC</h4>
-    <h4>{{ order.price }}$</h4>
+    <a href="{% url 'buyorder_details' pk=buyorder.pk %}"><h1 class="w3-hover-text-green">{{ buyorder.profile }}</h1></a>
+    <p>{{ buyorder.datetime }}</p>
+    <h4>{{ buyorder.quantity }} BTC</h4>
+    <h4>{{ buyorder.price }}$</h4>
 </div>
 {% endfor %}
 

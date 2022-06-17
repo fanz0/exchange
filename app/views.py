@@ -2,9 +2,9 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .models import Profile,Order, SellOrder
+from .models import Profile,Order,BuyOffer
 from django.views.decorators.csrf import csrf_exempt
-from .forms import OrderForm, SellOrderForm
+from .forms import OrderForm,BuyForm
 import requests
 
 
@@ -84,8 +84,17 @@ def publish_order(request):
 def orders_list(request):
     price = get_price()
     orders=Order.objects.all()
-    sellorders=SellOrder.objects.all()
-    return render(request,'app/orders_list.html',{'orders':orders,'price':price,'sellorders':sellorders})
+    buyorders=BuyOffer.objects.all()
+    common=[]
+    normal=[]
+    for order in orders:
+        for buyorder in buyorders:
+            if order.pk==buyorder.pk:
+                common.append(order)
+    for order in orders:
+        if order not in common:
+            normal.append(order)
+    return render(request,'app/orders_list.html',{'orders':orders,'price':price,'buyorders':buyorders,'common':common,'normal':normal})
 
 def order_details(request,pk):
     price = get_price()
@@ -127,47 +136,45 @@ def analytics(request):
     total_gain=actual_balance-initial_balance
     return render(request,'app/analytics.html',{'initial_balance':initial_balance,'actual_balance':actual_balance,'gain':total_gain,'price':price})
 
-def publish_buy_order(request):
+def buy_order(request):
     price = get_price()
     if request.method=="POST":
-        form=SellOrderForm(request.POST)
+        form=BuyForm(request.POST)
         if form.is_valid():
             order=form.save(commit=False)
             profile=Profile.objects.get(user_profile=request.user)
             if (profile.usd-order.price)>=0:
                 profile.usd-=order.price
-                order.buyer_profile = request.user
+                order.profile = request.user
                 order.save()
                 profile.save()
                 messages.success(request, 'Offer published!')
                 return redirect('profile')
             else:
-                messages.success(request, 'Ops. There is an error... Try again.')
+                messages.success(request, 'You dont have enough bitcoins!')
                 return redirect('profile')
     else:
-        form=OrderForm()
+        form=BuyForm()
     return render(request,'app/new_order.html',{'form':form,'price':price})
 
-def sell(request,pk):
+def sale(request,pk):
     price = get_price()
     seller_profile=Profile.objects.get(user_profile=request.user)
-    order=SellOrder.objects.get(pk=pk)
-    buyer_profile=Profile.objects.get(user_profile=order.buyer_profile)
+    order=BuyOffer.objects.get(pk=pk)
+    buyer_profile=Profile.objects.get(user_profile=order.profile)
     if seller_profile.btc >= order.quantity:
-        seller_profile.btc-=order.quantity
-        buyer_profile.btc+=order.quantity
+        seller_profile.btc-= order.quantity
+        buyer_profile.btc+= order.quantity
         seller_profile.usd+=order.price
         buyer_profile.save()
         seller_profile.save()
         order.delete()
     else:
-        messages.success(request,'Ops! You dont have enough BTC...')
+        messages.success(request,'Ops! You dont have enough money...')
         return redirect('profile')
     return render(request,'app/sell.html',{'quantity':order.quantity,'buyer':buyer_profile.user_profile,'price':price})
 
-def buy_order_details(request,pk):
+def buyorder_details(request,pk):
     price = get_price()
-    order=get_object_or_404(SellOrder,pk=pk)
-    return render(request,'app/buy_order_details.html',{'order':order,'price':price})
-
-
+    order=get_object_or_404(BuyOffer,pk=pk)
+    return render(request,'app/buyorder_details.html',{'order':order,'price':price})
