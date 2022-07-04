@@ -178,3 +178,8 @@ def buyorder_details(request,pk):
     price = get_price()
     order=get_object_or_404(BuyOffer,pk=pk)
     return render(request,'app/buyorder_details.html',{'order':order,'price':price})
+
+def buyorders_list(request):
+    price = get_price()
+    orders=BuyOffer.objects.all()
+    return render(request,'app/buyorders_list.html',{'orders':orders,'price':price})

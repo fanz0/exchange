@@ -2,12 +2,12 @@
 
 {% block content %}
 
-<a href="{% url 'buy_order' %}"><p class="w3-right w3-margin-right w3-hover-green">Buy Bitcoins!</p></a>
+<a href="{% url 'publish_order' %}"><p class="w3-right w3-margin-right w3-hover-green">Sell Bitcoins</p></a>
 <h1 class="w3-margin-left w3-xxxlarge">Orders List</h1>
 
-{% for order in normal %}
+{% for order in orders %}
 <div class="w3-margin w3-card">
-    <a href="{% url 'order_details' pk=order.pk %}"><h1 class="w3-hover-text-green">{{ order.profile }}</h1></a>
+    <a href="{% url 'buyorder_details' pk=order.pk %}"><h1 class="w3-hover-text-green">{{ order.profile }}</h1></a>
     <p>{{ order.datetime }}</p>
     <h4>{{ order.quantity }} BTC</h4>
     <h4>{{ order.price }}$</h4>
